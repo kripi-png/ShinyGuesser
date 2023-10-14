@@ -2,14 +2,14 @@
 	"name": "shinyguesser",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "dist/index.js",
 	"type": "module",
 	"scripts": {
 		"client-install": "cd svelte && npm i",
 		"start": "node dist/index.js",
 		"serve:server": "nodemon dist/index.js",
 		"serve:client": "cd svelte && npm run dev",
-		"dev": "concurrently \"npx tsc --watch\" \"npm run serve:server\" \"npm run serve:client\"",
+		"dev": "concurrently \"tsc --watch\" \"npm run serve:server\" \"npm run serve:client\"",
 		"format": "prettier --plugin=prettier-plugin-svelte --plugin=prettier-plugin-organize-imports --write ."
 	},
 	"author": "kripi-png",

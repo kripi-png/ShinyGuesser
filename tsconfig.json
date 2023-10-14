@@ -3,6 +3,7 @@
 		"outDir": "./dist",
 		"target": "ESNext",
 		"module": "ESNext",
+		"resolveJsonModule": true,
 		"allowJs": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
@@ -11,10 +12,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
 		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true
+		"noImplicitAny": true
 	},
-	"include": ["src"],
-	"exclude": ["svelte"]
+	"exclude": ["svelte", "dist"]
 }
