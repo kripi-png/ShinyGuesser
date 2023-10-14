@@ -25,12 +25,17 @@ const getRandomPokemon: RequestHandler = async (req, res, next) => {
 			pokemonId,
 			pokemonName,
 			varietyName,
+			// whether male and female have different sprites
 			has_gender_difference: data.sprites.front_female !== null,
 			sprites: {
-				front_default: data.sprites.front_default,
-				front_shiny: data.sprites.front_shiny,
-				front_female: data.sprites.front_female,
-				front_shiny_female: data.sprites.front_shiny_female,
+				default: {
+					normal: data.sprites.front_default,
+					shiny: data.sprites.front_shiny,
+				},
+				female: {
+					normal: data.sprites.front_female,
+					shiny: data.sprites.front_shiny_female,
+				}
 			},
 		});
 	} catch (error: any) {
