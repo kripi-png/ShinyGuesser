@@ -14,5 +14,6 @@
 		"moduleResolution": "node",
 		"noImplicitAny": true
 	},
-	"exclude": ["svelte", "dist"]
+	"include": ["api"],
+	"exclude": ["svelte"]
 }

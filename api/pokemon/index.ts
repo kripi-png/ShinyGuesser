@@ -1,8 +1,9 @@
-import { RequestHandler } from 'express';
+import express, { RequestHandler } from 'express';
 import pokemon from 'pokemon';
 import { PokemonClient, PokemonSprites } from 'pokenode-ts';
 
 const pokeApi = new PokemonClient();
+const router = express.Router();
 
 const getRandomFromList = (list: Array<string>) => {
 	// generate a random number between 0 and list's length
@@ -76,7 +77,7 @@ const requestRandomPokemon = async () => {
 	}
 };
 
-const getRandomPokemon: RequestHandler = async (req, res, next) => {
+router.get("/", async (req, res) => {
 	try {
 		let validSprite = false;
 		let pokemonData = null;
@@ -99,9 +100,6 @@ const getRandomPokemon: RequestHandler = async (req, res, next) => {
 		console.error(error);
 		res.status(500).json({ error: error.message });
 	}
-	next();
-};
+});
 
-export default {
-	getRandomPokemon,
-};
+export default router

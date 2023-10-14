@@ -1,15 +1,11 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import cors from 'cors';
 import express, { Express } from 'express';
-import router from './router/index.js';
+import pokemon from "./api/pokemon";
 
 const app: Express = express();
-app.set('port', process.env.PORT || 8000);
-
+app.set('port', 8080);
 app.use(cors());
-app.use(router);
+app.use("/api/pokemon", pokemon);
 
 app.listen(app.get('port'), () => {
 	console.log(
