@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express, { Express } from 'express';
-import pokemon from "./api/pokemon";
+import pokemon from "./api/pokemon/index.js";
 
 const app: Express = express();
 app.set('port', 8080);
