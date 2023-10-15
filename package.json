@@ -8,7 +8,7 @@
 		"build": "rimraf dist && tsc",
 		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add dist",
-		"client-build": "cd svelte && npm i && npx vite build --outDir ../dist/views --emptyOutDir",
+		"client-build": "cd svelte && npm i && npx vite build --emptyOutDir --outDir ../dist/views",
 
 
 		"client-install": "cd svelte && npm i",
