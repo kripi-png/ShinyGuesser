@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import pokemon from 'pokemon';
 import { PokemonClient, PokemonSprites } from 'pokenode-ts';
 
@@ -77,7 +77,7 @@ const requestRandomPokemon = async () => {
 	}
 };
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
 	try {
 		let validSprite = false;
 		let pokemonData = null;
@@ -102,4 +102,4 @@ router.get("/", async (req, res) => {
 	}
 });
 
-export default router
+export default router;

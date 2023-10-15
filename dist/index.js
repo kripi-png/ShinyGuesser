@@ -11,9 +11,9 @@ const app = (0, express_1.default)();
 app.set('port', 8080);
 app.use((0, cors_1.default)());
 app.use(express_1.default.static(path));
-app.use("/api/pokemon", pokemon_1.default);
+app.use('/api/pokemon', pokemon_1.default);
 app.get('/', function (req, res) {
-    res.sendFile(path + "index.html");
+    res.sendFile(path + 'index.html');
 });
 app.listen(app.get('port'), () => {
     console.log(`[server]: Server is running at http://localhost:${app.get('port')}`);

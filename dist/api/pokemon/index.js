@@ -84,7 +84,7 @@ const requestRandomPokemon = () => __awaiter(void 0, void 0, void 0, function* (
         throw error;
     }
 });
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let validSprite = false;
         let pokemonData = null;
