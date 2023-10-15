@@ -42,9 +42,9 @@
 		"rimraf": "^5.0.5"
 	},
 	"pre-commit": [
-		"client-build",
 		"ts.check",
 		"build",
+		"client-build",
 		"add-build"
 	]
 }
