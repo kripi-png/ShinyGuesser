@@ -21,7 +21,7 @@ const createPokemonStore = () => {
 	};
 
 	const getNewPokemon = async () => {
-		const res = await fetch('http://localhost:8000/pokemon');
+		const res = await fetch('/api/pokemon');
 		const data = await res.json();
 		console.log('new pokemon', { ...data });
 
