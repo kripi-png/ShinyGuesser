@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "name": "shiny-guesser",
+  "builds": [
+    {
+      "src": "index.ts",
+      "use": "@now/node"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
