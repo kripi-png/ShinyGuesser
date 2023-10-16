@@ -15,7 +15,7 @@ export const usePokemonStore = defineStore('pokemons', () => {
 	}
 
 	async function getNewPokemon() {
-		const res = await fetch('http://localhost:8080/api/pokemon');
+		const res = await fetch('/api/pokemon');
 		const data = await res.json();
 		currentPokemon.value = data;
 		isLoading.value = false;
