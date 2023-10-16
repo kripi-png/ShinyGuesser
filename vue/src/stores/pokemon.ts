@@ -19,7 +19,7 @@ export const usePokemonStore = defineStore('pokemons', () => {
 		const data = await res.json();
 		currentPokemon.value = data;
 		isLoading.value = false;
-		console.log(data);
+		// console.log(data);
 	}
 
 	return {
