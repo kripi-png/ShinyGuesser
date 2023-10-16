@@ -23,6 +23,14 @@ const getRandomFromList = (list) => {
     const rIndex = Math.floor(Math.random() * list.length);
     return list[rIndex];
 };
+const parseVarietyName = (fullVariety) => {
+    if (fullVariety.includes('-')) {
+        // take everything after first dash and replace the rest of possible dashes with spaces
+        // e.g. gardevoir-mega -> mega
+        // 			tauros-paldea-blaze-breed -> paldea blaze breed
+        return fullVariety.split(/-(.*)/)[1].replace(/-/g, ' ');
+    }
+};
 const getRandomSprite = (allSprites) => {
     // helper object for convenience
     const _sprites = {
@@ -65,8 +73,10 @@ const requestRandomPokemon = () => __awaiter(void 0, void 0, void 0, function* (
         const { varieties } = yield pokeApi.getPokemonSpeciesById(pokemonId);
         const varietyNames = varieties.map((v) => v.pokemon.name);
         // get "random" variety (e.g. wormadam-trash), even if there is only one
-        const varietyName = getRandomFromList(varietyNames);
-        const data = yield pokeApi.getPokemonByName(varietyName);
+        const randomVarietyName = getRandomFromList(varietyNames);
+        // get actual variety name (e.g. gardevoir-mega -> mega)
+        const varietyName = parseVarietyName(randomVarietyName);
+        const data = yield pokeApi.getPokemonByName(randomVarietyName);
         // select normal or shiny sprite of either default or female version of the pokemon
         // and also get relevant information on the selection
         const { sprite, isShiny, isFemale } = getRandomSprite(data.sprites);
