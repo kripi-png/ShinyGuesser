@@ -5,8 +5,9 @@
 	"main": "server/index.ts",
 	"scripts": {
 		"start:server": "nodemon server/index.ts",
+		"start:client": "cd vue && npm run dev",
+		"dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
 		"build": "rimraf dist server/views && tsc && npm run client-build && npm run copy-files && rimraf server/views",
-		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add dist",
 		"client-install": "cd vue && npm i",
 		"client-build": "cd vue && npm i && npx vite build --emptyOutDir --outDir ../server/views",
