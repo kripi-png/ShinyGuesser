@@ -1,53 +1,54 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
-import TheWelcome from './components/TheWelcome.vue';
+import PokemonName from '@/components/PokemonName.vue';
+import GuessButtons from '@/components/GuessButtons.vue';
+import { usePokemonStore } from '@/stores/pokemon';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
+const store = usePokemonStore();
+const { currentPokemon, isLoading } = storeToRefs(store);
+store.isLoading = true;
+store.getNewPokemon();
 </script>
 
 <template>
-	<header>
-		<img
-			alt="Vue logo"
-			class="logo"
-			src="./assets/logo.svg"
-			width="125"
-			height="125"
-		/>
-
-		<div class="wrapper">
-			<HelloWorld msg="You did it!" />
-		</div>
-	</header>
-
-	<main>
-		<TheWelcome />
-	</main>
+	<div class="pokemonBox">
+		<v-img
+			class="mx-auto"
+			width="300"
+			height="300"
+			max-width="500"
+			:src="currentPokemon && currentPokemon.sprite"
+		>
+			<template v-slot:placeholder>
+				<v-progress-circular
+					class="progressCircle"
+					indeterminate
+					color="indigo-darken-2"
+				>
+				</v-progress-circular>
+			</template>
+		</v-img>
+		<PokemonName />
+		<GuessButtons />
+	</div>
 </template>
 
 <style scoped>
-header {
-	line-height: 1.5;
+div {
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
+	display: flex;
+	flex-direction: column;
 }
 
-.logo {
-	display: block;
-	margin: 0 auto 2rem;
+.pokemonBox {
+	text-align: center;
 }
 
-@media (min-width: 1024px) {
-	header {
-		display: flex;
-		place-items: center;
-		padding-right: calc(var(--section-gap) / 2);
-	}
-
-	.logo {
-		margin: 0 2rem 0 0;
-	}
-
-	header .wrapper {
-		display: flex;
-		place-items: flex-start;
-		flex-wrap: wrap;
-	}
+.progressCircle {
+	width: 32px;
+	margin-top: 50%;
 }
 </style>
