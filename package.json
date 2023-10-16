@@ -2,19 +2,14 @@
 	"name": "shinyguesser",
 	"version": "1.0.0",
 	"description": "",
-	"main": "src/index.ts",
+	"main": "server/index.ts",
 	"scripts": {
-		"start:server": "nodemon src/index.ts",
+		"start:server": "nodemon server/index.ts",
 		"build": "rimraf dist && tsc",
 		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add dist",
-		"client-build": "cd svelte && npm i && npx vite build --emptyOutDir --outDir ../dist/views",
-		"client-install": "cd svelte && npm i",
-		"start": "node dist/index.js",
-		"serve:server": "nodemon dist/index.js",
-		"serve:client": "cd svelte && npm run dev",
-		"dev": "concurrently \"tsc --watch\" \"npm run serve:server\" \"npm run serve:client\"",
-		"format": "prettier --plugin=prettier-plugin-svelte --plugin=prettier-plugin-organize-imports --write ."
+		"client-install": "cd vue && npm i",
+		"client-build": "cd vue && npm i && npx vite build --emptyOutDir --outDir ../server/views"
 	},
 	"author": "kripi-png",
 	"license": "ISC",
@@ -33,7 +28,6 @@
 		"pokenode-ts": "^1.20.0",
 		"prettier": "^3.0.3",
 		"prettier-plugin-organize-imports": "^3.2.3",
-		"prettier-plugin-svelte": "^3.0.3",
 		"ts-node": "^10.9.1",
 		"typescript": "^5.2.2"
 	}
