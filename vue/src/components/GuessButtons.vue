@@ -26,6 +26,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 		<v-btn
 			variant="tonal"
 			color="blue-darken-4"
+			:disabled="!currentPokemon"
 			@click="handleGuess(!currentPokemon.isShiny)"
 		>
 			Normal
@@ -33,6 +34,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 		<v-btn
 			variant="tonal"
 			color="yellow-darken-2"
+			:disabled="!currentPokemon"
 			@click="handleGuess(currentPokemon.isShiny)"
 		>
 			Shiny
