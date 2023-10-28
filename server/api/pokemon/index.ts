@@ -13,7 +13,18 @@ const getRandomFromList = (list: Array<string>) => {
 };
 
 const parseVarietyName = (fullVariety: string) => {
-	if (fullVariety.includes('-')) {
+	// list of pokemon names that should not be parsed
+	// for example Ho-Oh would become (Oh) Ho-Oh which is kind of funny but not wanted
+	const IGNORE_LIST = [
+		'porygon-z',
+		'porygon-2',
+		'ho-oh',
+		'jangmo-o',
+		'Hakamo-o',
+		'Kommo-o',
+	];
+
+	if (fullVariety.includes('-') && !IGNORE_LIST.includes(fullVariety)) {
 		// take everything after first dash and replace the rest of possible dashes with spaces
 		// e.g. gardevoir-mega -> mega
 		// 			tauros-paldea-blaze-breed -> paldea blaze breed
