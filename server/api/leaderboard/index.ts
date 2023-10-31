@@ -13,7 +13,6 @@ router.get(
 		const reverse = req.query.reverse === 'true' ? true : false;
 		let count = Number(req.params.count);
 		if (!count || isNaN(count)) count = 10;
-		console.log({ count, reverse });
 
 		// initially scores are returned in a list where name and score are altered
 		// [name1, score1, name2, score2, ...]
@@ -26,9 +25,8 @@ router.get(
 		// [[name1, score1], [name2, score2], ...]
 		const leaderboard: [string, number][] = [];
 		for (let index = 0; index < flatUserScoreList.length - 1; index++) {
-			const value = flatUserScoreList[index];
+			const value = flatUserScoreList[index].toString();
 			const nextValue = flatUserScoreList[index + 1];
-
 			if (typeof value === 'string' && typeof nextValue === 'number') {
 				leaderboard.push([value, nextValue]);
 			}

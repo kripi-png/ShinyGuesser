@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PokemonName from '@/components/PokemonName.vue';
 import GuessButtons from '@/components/GuessButtons.vue';
+import Leaderboard from '@/components/Leaderboard.vue';
 import { usePokemonStore } from '@/stores/pokemon';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
@@ -32,6 +33,7 @@ store.getNewPokemon();
 		<PokemonName />
 		<GuessButtons />
 	</div>
+	<Leaderboard />
 </template>
 
 <style scoped>
