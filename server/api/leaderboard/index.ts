@@ -3,6 +3,11 @@ import { kv } from '@vercel/kv';
 
 const router = express.Router();
 
+const calculateScore = (streak: number, time: number) => {
+	const score = Math.floor(streak / Math.log(time ** 2));
+	return score;
+};
+
 // get :count amount of scores; default to 10
 // values are stored in increasing order in the database
 // so by default get the entries in reversed order
@@ -36,39 +41,48 @@ router.get(
 	}
 );
 
+// score is calculated with :streak and :time with formula
+// streak / log(time in seconds), floored
+// the final score is saved to a sorted set for quick retrieving
+// and hash is used for all the information (streak, time, score)
 router.post(
 	'/:user/:score',
-	async (req: Request<{ user: string; score: number }>, res) => {
+	async (req: Request<{ user: string; streak: number; time: number }>, res) => {
 		const user = req.params.user;
 		// check param count
-		if (!user || !req.params.score)
-			return res.status(400).send('missing parameter(s)');
+		if (!user || !req.params.streak || !req.params.time)
+			return res.status(400).send('missing parameter(s): streak and/or time');
 
-		// validate score
-		const score = Number(req.params.score);
-		if (isNaN(score))
-			return res.status(400).send('score is not a number: ' + score);
+		// validate parameters
+		const streak = Number(req.params.streak);
+		if (isNaN(streak))
+			return res.status(400).send('streak is not a number: ' + streak);
+
+		const timeInSeconds = Number(req.params.time);
+		if (isNaN(timeInSeconds))
+			return res.status(400).send('time is not a number: ' + timeInSeconds);
 
 		try {
-			// GT (greater than) does not seem to be supported, so we have to compare
-			// the old score to the new score and then update the value in db
-			// if new score is higher
+			// score is saved to sorted score
+			const finalScore = calculateScore(streak, timeInSeconds);
+			// additionally, all score-related information is hashed
+			const scoreObject = { streak, time: timeInSeconds, score: finalScore };
+
+			// if the score is worse than or equal to the previous best, discontinue
 			const oldScore = await kv.zscore('scores', user);
-			if (oldScore >= score)
+			if (oldScore >= finalScore) {
 				return res
 					.status(200)
 					.send(
 						'score not saved: score was lower than or equal to previous value'
 					);
-
-			// update database
-			await kv.zadd('scores', { score, member: user });
-			return res.status(204).end();
+			}
+			// save score and score object
+			await kv.set(user, scoreObject);
+			await kv.zadd('scores', { score: finalScore, member: user });
 		} catch (error) {
 			return res.status(500).send(error.message);
 		}
-
-		return res.status(200).json({ user, score });
 	}
 );
 
