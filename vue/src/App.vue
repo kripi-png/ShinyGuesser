@@ -2,6 +2,7 @@
 import PokemonName from '@/components/PokemonName.vue';
 import GuessButtons from '@/components/GuessButtons.vue';
 import Leaderboard from '@/components/Leaderboard.vue';
+import Timer from '@/components/Timer.vue';
 import { usePokemonStore } from '@/stores/pokemon';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
@@ -14,6 +15,7 @@ store.getNewPokemon();
 
 <template>
 	<div class="pokemonBox">
+		<Timer />
 		<v-img
 			class="mx-auto"
 			width="300"
