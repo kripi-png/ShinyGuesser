@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { usePokemonStore } from '@/stores/pokemon';
-
+import { useTimerStore } from '@/stores/timer';
+const timer = useTimerStore();
 const store = usePokemonStore();
 const { streak, currentPokemon } = storeToRefs(store);
 
@@ -27,22 +28,31 @@ const handleGuess = async (correctGuess: Boolean) => {
 	if (!currentPokemon || store.isLoading) return;
 
 	if (correctGuess) {
+		// start timer after first correct guess
+		if (streak.value === 0) {
+			timer.startTimer();
+		}
 		store.increaseStreak();
 	} else {
-		// define confirmation text before resetting score
-		const scoreToBeSaved = streak.value;
-		const confirmationText = `You got a streak of ${scoreToBeSaved}!\nDo you want to leave your name for the leaderboard?`;
+		// define confirmation text and variables before resetting score
+		timer.pauseTimer();
+		const streakToBeSaved = streak.value;
+		const timeToBeSaved = timer.secondsElapsed;
+		const confirmationText = `You got a streak of ${streakToBeSaved} in ${timer.formattedTime}!\nDo you want to leave your name for the leaderboard?`;
 		store.resetStreak();
+		timer.resetTimer();
 
-		if (scoreToBeSaved <= 0) return;
+		if (streakToBeSaved <= 0) return;
 
 		if (confirm(confirmationText)) {
 			const name = askForUsername();
 			if (!name) return;
-
-			const res = await fetch(`/api/leaderboard/${name}/${scoreToBeSaved}`, {
-				method: 'POST',
-			});
+			fetch(
+				`/api/leaderboard/${name}?streak=${streakToBeSaved}&time=${timeToBeSaved}`,
+				{
+					method: 'POST',
+				}
+			);
 		}
 	}
 

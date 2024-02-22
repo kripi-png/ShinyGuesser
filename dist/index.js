@@ -15,10 +15,9 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.static(path));
 app.use('/api/pokemon', pokemon_1.default);
 app.use('/api/leaderboard', leaderboard_1.default);
-app.get('/', function (req, res) {
+app.get('/', function (_req, res) {
     res.sendFile(path + 'index.html');
 });
 app.listen(app.get('port'), () => {
     console.log(`[server]: Server is running at http://localhost:${app.get('port')}`);
 });
-//# sourceMappingURL=index.js.map

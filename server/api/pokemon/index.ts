@@ -12,6 +12,7 @@ const getRandomFromList = (list: Array<string>) => {
 	return list[rIndex];
 };
 
+// TODO: look through this mess
 const parseVarietyName = (fullVariety: string) => {
 	// list of pokemon names that should not be parsed
 	// for example Ho-Oh would become (Oh) Ho-Oh which is kind of funny but not wanted
@@ -30,6 +31,8 @@ const parseVarietyName = (fullVariety: string) => {
 		// 			tauros-paldea-blaze-breed -> paldea blaze breed
 		return fullVariety.split(/-(.*)/)[1].replace(/-/g, ' ');
 	}
+
+	return fullVariety.split(/-(.*)/)[1];
 };
 
 const getRandomSprite = (allSprites: PokemonSprites) => {
@@ -99,7 +102,7 @@ const requestRandomPokemon = async () => {
 	}
 };
 
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
 	try {
 		let validSprite = false;
 		let pokemonData = null;
