@@ -34,7 +34,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 		}
 		store.increaseStreak();
 	} else {
-		// define confirmation text before resetting score
+		// define confirmation text and variables before resetting score
 		timer.pauseTimer();
 		const streakToBeSaved = streak.value;
 		const timeToBeSaved = timer.secondsElapsed;
@@ -47,8 +47,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 		if (confirm(confirmationText)) {
 			const name = askForUsername();
 			if (!name) return;
-
-			const res = await fetch(
+			fetch(
 				`/api/leaderboard/${name}?streak=${streakToBeSaved}&time=${timeToBeSaved}`,
 				{
 					method: 'POST',
