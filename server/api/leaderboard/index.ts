@@ -32,9 +32,9 @@ router.get('/', async (req, res) => {
 		const leaderboard = [];
 		for (let i = 0; i < flatUserScoreList.length; i += 2) {
 			const user = flatUserScoreList[i]; // i = 0, 2, 4
-			const score = flatUserScoreList[i + 1]; // i+1 = 1, 3, 5
+			const streak = flatUserScoreList[i + 1]; // i+1 = 1, 3, 5
 			const time = Number((await kv.hget(`user:${user}`, 'time')) || 0);
-			leaderboard.push({ user, score, time });
+			leaderboard.push({ user, streak, time });
 		}
 
 		return res.status(200).json({
