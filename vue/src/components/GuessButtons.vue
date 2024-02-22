@@ -11,7 +11,7 @@ const askForUsername = (): string | false => {
 	while (true) {
 		name = prompt(
 			'What is your username (max 10 characters)?\nLeave empty to cancel. You will lose the score!'
-		);
+		).trim();
 		if (!name) return false;
 
 		if (name.length > 10) {
