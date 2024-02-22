@@ -13,7 +13,7 @@ app.use(express.static(path));
 app.use('/api/pokemon', pokemon);
 app.use('/api/leaderboard', leaderboard);
 
-app.get('/', function (req, res) {
+app.get('/', function (_req, res) {
 	res.sendFile(path + 'index.html');
 });
 

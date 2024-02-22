@@ -1,14 +1,16 @@
 {
 	"compilerOptions": {
+		"target": "es2022",
 		"module": "commonjs",
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"target": "es6",
-		"noImplicitAny": true,
-		"moduleResolution": "node",
-		"sourceMap": true,
 		"outDir": "dist",
-		"baseUrl": ".",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"esModuleInterop": true,
+
+		"baseUrl": "./server",
 		"paths": {
 			"*": ["node_modules/*", "server/types/*"],
 		},
