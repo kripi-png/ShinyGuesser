@@ -2,13 +2,9 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { formatSeconds } from '../utils';
 
-const padNumber = (number: number) => {
-	return number.toString().padStart(2, '0');
-};
-
 export const useTimerStore = defineStore('timer', () => {
 	const secondsElapsed = ref(0);
-	let intervalId = null;
+	let intervalId: number | null = null;
 
 	const formattedTime = computed(() => {
 		return formatSeconds(secondsElapsed.value);
