@@ -97,6 +97,7 @@ router.use('/guesser', async (_req, res) => {
 			// destructuring into existing variables requires parentheses
 			({ id, name, sprites } = await selectRandomPokemonVariety(randomId));
 			sprite = getRandomSprite(sprites);
+			console.log({ id, name, sprite, sprites });
 			if (id && name && sprite) break;
 		}
 
