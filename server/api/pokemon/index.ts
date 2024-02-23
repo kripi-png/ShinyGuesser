@@ -6,7 +6,7 @@ import { PokemonClient, PokemonSprites, Pokemon } from 'pokenode-ts';
 const router = express.Router();
 const pokeApi = new PokemonClient();
 
-type RandomSpriteObj = { isShiny: boolean; isFemale: boolean; sprite: string };
+type RandomSpriteObj = { isShiny: boolean; isFemale: boolean; url: string };
 const getRandomSprite = (sprites: PokemonSprites): RandomSpriteObj => {
 	const helperSprites = {
 		default: {
@@ -26,12 +26,12 @@ const getRandomSprite = (sprites: PokemonSprites): RandomSpriteObj => {
 	const genderSprites = (
 		isFemale ? helperSprites.female : helperSprites.default
 	) as { normal: string; shiny: string };
-	const sprite = isShiny ? genderSprites.shiny : genderSprites.normal;
+	const url = isShiny ? genderSprites.shiny : genderSprites.normal;
 
 	return {
 		isShiny,
 		isFemale,
-		sprite,
+		url,
 	};
 };
 
@@ -52,11 +52,27 @@ const isFiltered = async (name: string): Promise<boolean> => {
 	return isMember === 1;
 };
 
-const parseName = async (name: string): Promise<string> => {
+type ParsedNameObj = { displayName: string; varietyName: string | null; }
+const parseName = async (name: string): Promise<ParsedNameObj> => {
+	if (await isFiltered(name)) {
+		return {
+			displayName: name,
+			varietyName: null,
+		}
+	}
+
+	// divide at dash and capitalize each word; if there are multiple words,
+	// set last word as variety name and combine rest for display name
 	const parts = name.split(/-/).map(capitalizeWord);
-	if (parts.length === 1 || (await isFiltered(name))) return name;
-	const varietyName = parts.pop();
-	return `(${varietyName}) ${parts.join(' ')}`;
+	let varietyName = null;
+	if (parts.length > 1) {
+		varietyName = <string>parts.pop();
+	}
+
+	return {
+		displayName: parts.join(" "),
+		varietyName: varietyName,
+	}
 };
 
 // GET /api/leaderboard/guesser
@@ -73,11 +89,13 @@ router.use('/guesser', async (_req, res) => {
 			if (id && name && sprite) break;
 		}
 
+		const { displayName, varietyName } = await parseName(name);
 		return res.status(200).send({
 			data: {
 				id,
 				name, // default name (e.g. wormadam-trash)
-				displayName: await parseName(name), // e.g. (Trash) Wormadam
+				displayName, // e.g. Wormadam
+				varietyName, // e.g. Trash
 				sprite,
 			},
 			meta: {},
