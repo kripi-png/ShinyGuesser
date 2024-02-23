@@ -4,12 +4,13 @@ import express, { Express } from 'express';
 import pokemon from './api/pokemon/';
 import leaderboard from './api/leaderboard/';
 
+// frontend is moved to /views after building
 const path = __dirname + '/views/';
 const app: Express = express();
 
 app.set('port', 8080);
 app.use(cors());
-app.use(express.static(path));
+app.use(express.static(path)); // serve frontend
 app.use('/api/pokemon', pokemon);
 app.use('/api/leaderboard', leaderboard);
 

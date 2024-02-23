@@ -1,129 +1,90 @@
+import pokemonList from 'pokemon';
 import express from 'express';
-import pokemon from 'pokemon';
-import { PokemonClient, PokemonSprites } from 'pokenode-ts';
+import { kv } from '@vercel/kv';
+import { PokemonClient, PokemonSprites, Pokemon } from 'pokenode-ts';
 
-const pokeApi = new PokemonClient();
 const router = express.Router();
+const pokeApi = new PokemonClient();
 
-const getRandomFromList = (list: Array<string>) => {
-	// generate a random number between 0 and list's length
-	// and return the value with the index from the array
-	const rIndex = Math.floor(Math.random() * list.length);
-	return list[rIndex];
-};
-
-// TODO: look through this mess
-const parseVarietyName = (fullVariety: string) => {
-	// list of pokemon names that should not be parsed
-	// for example Ho-Oh would become (Oh) Ho-Oh which is kind of funny but not wanted
-	const IGNORE_LIST = [
-		'porygon-z',
-		'porygon-2',
-		'ho-oh',
-		'jangmo-o',
-		'Hakamo-o',
-		'Kommo-o',
-	];
-
-	if (fullVariety.includes('-') && !IGNORE_LIST.includes(fullVariety)) {
-		// take everything after first dash and replace the rest of possible dashes with spaces
-		// e.g. gardevoir-mega -> mega
-		// 			tauros-paldea-blaze-breed -> paldea blaze breed
-		return fullVariety.split(/-(.*)/)[1].replace(/-/g, ' ');
-	}
-
-	return fullVariety.split(/-(.*)/)[1];
-};
-
-const getRandomSprite = (allSprites: PokemonSprites) => {
-	// helper object for convenience
-	const _sprites = {
+type RandomSpriteObj = { isShiny: boolean; isFemale: boolean; sprite: string };
+const getRandomSprite = (sprites: PokemonSprites): RandomSpriteObj => {
+	const helperSprites = {
 		default: {
-			normal: allSprites.front_default,
-			shiny: allSprites.front_shiny,
+			normal: sprites.front_default,
+			shiny: sprites.front_shiny,
 		},
 		female: {
-			normal: allSprites.front_female,
-			shiny: allSprites.front_shiny_female,
+			normal: sprites.front_female,
+			shiny: sprites.front_shiny_female,
 		},
 	};
 
-	// whether female differs from male/default
-	const hasGenderDifference = allSprites.front_female !== null;
-	// 50/50 to select the shiny sprite
-	const shiny = Math.random() >= 0.5 ? true : false;
-	// by default use default sprite
-	let useDefault = true;
-	if (hasGenderDifference) {
-		// 50/50 to select female sprite if there's gender difference
-		useDefault = Math.random() >= 0.5 ? false : true;
-	}
-	// select either default or female
-	const defaultOrFemale = useDefault ? _sprites.default : _sprites.female;
-	// select either normal or shiny version
-	const finalSprite = shiny ? defaultOrFemale.shiny : defaultOrFemale.normal;
+	const isShiny = Math.random() >= 0.5;
+	const femaleDiffers = helperSprites.female.normal !== null;
+	// 50/50 if there is gender diff; otherwise always male/default
+	const isFemale = femaleDiffers ? Math.random() >= 0.5 : false;
+	const genderSprites = (
+		isFemale ? helperSprites.female : helperSprites.default
+	) as { normal: string; shiny: string };
+	const sprite = isShiny ? genderSprites.shiny : genderSprites.normal;
 
-	// return all relevant information about selected sprite
 	return {
-		sprite: finalSprite,
-		isShiny: shiny,
-		isFemale: !useDefault,
+		isShiny,
+		isFemale,
+		sprite,
 	};
 };
 
-const requestRandomPokemon = async () => {
-	try {
-		// get id of a random pokemon
-		const pokemonName = pokemon.random();
-		const pokemonId = pokemon.getId(pokemonName);
-		// find out if there are varieties for the pokemon (e.g. Wormadam has 3)
-		const { varieties } = await pokeApi.getPokemonSpeciesById(pokemonId);
-		const varietyNames = varieties.map((v) => v.pokemon.name);
-		// get "random" variety (e.g. wormadam-trash), even if there is only one
-		const randomVarietyName = getRandomFromList(varietyNames);
-		// get actual variety name (e.g. gardevoir-mega -> mega)
-		const varietyName = parseVarietyName(randomVarietyName);
-		const data = await pokeApi.getPokemonByName(randomVarietyName);
-		// select normal or shiny sprite of either default or female version of the pokemon
-		// and also get relevant information on the selection
-		const { sprite, isShiny, isFemale } = getRandomSprite(data.sprites);
-
-		return {
-			pokemonId,
-			pokemonName,
-			varietyName,
-			sprite,
-			isShiny,
-			isFemale,
-		};
-	} catch (error: any) {
-		console.error(error);
-		throw error;
-	}
+const selectRandomPokemonVariety = async (id: number): Promise<Pokemon> => {
+	const { varieties } = await pokeApi.getPokemonSpeciesById(id);
+	const rIndex = Math.floor(Math.random() * varieties.length);
+	const { pokemon } = varieties[rIndex];
+	return await pokeApi.getPokemonByName(pokemon.name);
 };
 
-router.get('/', async (_req, res) => {
+const capitalizeWord = (word: string): string => {
+	return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+const isFiltered = async (name: string): Promise<boolean> => {
+	// check database for filtered names such as ho-oh that should not be separated
+	const isMember = await kv.sismember('dashnames', name);
+	return isMember === 1;
+};
+
+const parseName = async (name: string): Promise<string> => {
+	const parts = name.split(/-/).map(capitalizeWord);
+	if (parts.length === 1 || (await isFiltered(name))) return name;
+	const varietyName = parts.pop();
+	return `(${varietyName}) ${parts.join(' ')}`;
+};
+
+// GET /api/leaderboard/guesser
+// returns an object containing image of either shiny or normal pokemon
+router.use('/guesser', async (_req, res) => {
+	const randomId = pokemonList.getId(pokemonList.random());
 	try {
-		let validSprite = false;
-		let pokemonData = null;
-		while (!validSprite) {
-			const randomPokemonData = await requestRandomPokemon();
-			if (randomPokemonData.sprite) {
-				validSprite = true;
-				pokemonData = randomPokemonData;
-			} else {
-				console.log('pokemon had invalid sprite, trying again', {
-					...randomPokemonData,
-				});
-			}
+		// ensure all variables are valid
+		let id, name, sprite, sprites;
+		while (true) {
+			// destructuring into existing variables requires parentheses
+			({ id, name, sprites } = await selectRandomPokemonVariety(randomId));
+			sprite = getRandomSprite(sprites);
+			if (id && name && sprite) break;
 		}
 
-		res.status(200).json({
-			...pokemonData,
+		return res.status(200).send({
+			data: {
+				id,
+				name, // default name (e.g. wormadam-trash)
+				displayName: await parseName(name), // e.g. (Trash) Wormadam
+				sprite,
+			},
+			meta: {},
 		});
 	} catch (error: any) {
-		console.error(error);
-		res.status(500).json({ error: error.message });
+		console.error(`pokemon id ${randomId} >>>`, error);
+		return res.status(500).send(error.name + ': ' + error.message);
 	}
 });
 
