@@ -52,13 +52,24 @@ const isFiltered = async (name: string): Promise<boolean> => {
 	return isMember === 1;
 };
 
-type ParsedNameObj = { displayName: string; varietyName: string | null; }
+// simple map for names requiring special attention when it comes to capitalization or such
+const MEGA_SPECIALS = {
+	'type-null': 'Type: Null',
+	'ho-oh': 'Ho-Oh',
+	'jangmo-o': 'Jangmo-o',
+	'hakamo-o': 'Hakamo-o',
+	'kommo-o': 'Kommo-o',
+} as { [key: string]: string };
+type ParsedNameObj = { displayName: string; varietyName: string | null };
 const parseName = async (name: string): Promise<ParsedNameObj> => {
 	if (await isFiltered(name)) {
+		if (Object.keys(MEGA_SPECIALS).includes(name)) {
+			name = MEGA_SPECIALS[name];
+		}
 		return {
 			displayName: name,
 			varietyName: null,
-		}
+		};
 	}
 
 	// divide at dash and capitalize each word; if there are multiple words,
@@ -70,9 +81,9 @@ const parseName = async (name: string): Promise<ParsedNameObj> => {
 	}
 
 	return {
-		displayName: parts.join(" "),
+		displayName: parts.join(' '),
 		varietyName: varietyName,
-	}
+	};
 };
 
 // GET /api/leaderboard/guesser
