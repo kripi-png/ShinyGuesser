@@ -8,11 +8,12 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const pokemon_1 = __importDefault(require("./api/pokemon/"));
 const leaderboard_1 = __importDefault(require("./api/leaderboard/"));
+// frontend is moved to /views after building
 const path = __dirname + '/views/';
 const app = (0, express_1.default)();
 app.set('port', 8080);
 app.use((0, cors_1.default)());
-app.use(express_1.default.static(path));
+app.use(express_1.default.static(path)); // serve frontend
 app.use('/api/pokemon', pokemon_1.default);
 app.use('/api/leaderboard', leaderboard_1.default);
 app.get('/', function (_req, res) {

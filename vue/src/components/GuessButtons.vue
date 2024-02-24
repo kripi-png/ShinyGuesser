@@ -11,7 +11,7 @@ const askForUsername = (): string | false => {
 	while (true) {
 		name = prompt(
 			'What is your username (max 10 characters)?\nLeave empty to cancel. You will lose the score!'
-		);
+		).trim();
 		if (!name) return false;
 
 		if (name.length > 10) {
@@ -24,7 +24,7 @@ const askForUsername = (): string | false => {
 	return name;
 };
 
-const handleGuess = async (correctGuess: Boolean) => {
+const handleGuess = async (correctGuess: boolean) => {
 	if (!currentPokemon || store.isLoading) return;
 
 	if (correctGuess) {
@@ -69,7 +69,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 			variant="tonal"
 			color="blue-darken-4"
 			:disabled="!currentPokemon"
-			@click="handleGuess(!currentPokemon.isShiny)"
+			@click="handleGuess(!currentPokemon.sprite.isShiny)"
 		>
 			Normal
 		</v-btn>
@@ -77,7 +77,7 @@ const handleGuess = async (correctGuess: Boolean) => {
 			variant="tonal"
 			color="yellow-darken-2"
 			:disabled="!currentPokemon"
-			@click="handleGuess(currentPokemon.isShiny)"
+			@click="handleGuess(currentPokemon.sprite.isShiny)"
 		>
 			Shiny
 		</v-btn>

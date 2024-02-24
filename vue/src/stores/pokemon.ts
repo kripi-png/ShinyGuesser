@@ -15,19 +15,18 @@ export const usePokemonStore = defineStore('pokemons', () => {
 	}
 
 	async function getNewPokemon() {
-		const res = await fetch('/api/pokemon');
-		const data = await res.json();
+		const res = await fetch('/api/pokemon/guesser');
+		const { data } = await res.json();
 		currentPokemon.value = data;
 		isLoading.value = false;
-		// console.log(data);
 	}
 
 	return {
 		streak,
+		currentPokemon,
+		isLoading,
+		getNewPokemon,
 		increaseStreak,
 		resetStreak,
-		currentPokemon,
-		getNewPokemon,
-		isLoading,
 	};
 });

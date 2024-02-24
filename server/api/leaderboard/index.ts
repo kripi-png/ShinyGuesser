@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 router.post(
 	'/:user',
 	async (req: Request<{ user: string; streak: number; time: number }>, res) => {
-		const user = req.params.user;
+		const user = req.params.user?.trim();
 		if (!user) return res.status(400).send('invalid username');
 		if (!req.query.streak) return res.status(400).send('missing streak value');
 		if (!req.query.time) return res.status(400).send('missing time value');

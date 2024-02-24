@@ -8,11 +8,11 @@ const { currentPokemon } = storeToRefs(store);
 
 <template>
 	<h2 v-if="currentPokemon">
-		<span class="pokemonId">#{{ currentPokemon.pokemonId }}</span>
+		<span class="pokemonId">#{{ currentPokemon.id }}</span>
 		<span v-if="currentPokemon.varietyName" class="varietyName"
 			>&nbsp;({{ currentPokemon.varietyName }})</span
 		>
-		{{ currentPokemon.pokemonName }}
+		{{ currentPokemon.displayName }}
 	</h2>
 	<h2 v-else>Loading...</h2>
 </template>

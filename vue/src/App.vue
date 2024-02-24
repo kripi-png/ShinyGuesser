@@ -21,7 +21,7 @@ store.getNewPokemon();
 			width="300"
 			height="300"
 			max-width="500"
-			:src="currentPokemon && currentPokemon.sprite"
+			:src="currentPokemon && currentPokemon.sprite.url"
 		>
 			<template v-slot:placeholder>
 				<v-progress-circular

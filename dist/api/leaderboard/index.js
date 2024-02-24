@@ -51,7 +51,7 @@ router.get('/', async (req, res) => {
 });
 // POST /api/leaderboard/:user?streak=number&time=number
 router.post('/:user', async (req, res) => {
-    const user = req.params.user;
+    const user = req.params.user?.trim();
     if (!user)
         return res.status(400).send('invalid username');
     if (!req.query.streak)
