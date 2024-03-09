@@ -7,7 +7,7 @@
 	"scripts": {
 		"server": "npm --workspace=server run",
 		"vue": "npm --workspace=vue run",
-		"vercel:build": "npm run vercel:build --workspaces"
+		"build": "npm run vercel:build --workspaces"
 	},
 	"workspaces": [
 		"apps/server",
