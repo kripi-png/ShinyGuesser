@@ -3,14 +3,9 @@
 	"installCommand": "npm install --workspaces --include-workspace-root",
 	"buildCommand": "npm run build",
 	"outputDirectory": "build",
-	"builds": [
-		{
-			"src": "package.json",
-			"use": "@vercel/static-build",
-			"config": { "distDir": "build" }
-		},
-    { "src": "*.html", "use": "@vercel/static" },
-    { "src": "*.py", "use": "@vercel/python" },
-    { "src": "*.js", "use": "@vercel/node" }
-	]
+	"functions": {
+		"/build/index.js": {
+			includeFiles: "build/**"
+		}
+	}
 }
