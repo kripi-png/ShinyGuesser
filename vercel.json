@@ -10,7 +10,7 @@
 			"config": { "distDir": "build" }
 		},
 		{
-			"src": "/index.js",
+			"src": "/build/index.js",
 			"use": "@vercel/node"
 		}
 	]
