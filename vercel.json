@@ -2,8 +2,5 @@
 	"version": 2,
 	"installCommand": "npm install --workspaces --include-workspace-root",
 	"buildCommand": "npm run build",
-	"outputDirectory": "build",
-	"functions": {
-		"build/api/**": {}
-	}
+	"outputDirectory": "build"
 }
