@@ -1,21 +1,24 @@
 {
-  "name": "shinyguesser",
-  "version": "1.0.0",
-  "description": "",
-  "author": "kripi-png",
-  "license": "ISC",
-  "scripts": {
-    "server": "npm --workspace=server run",
-    "vue": "npm --workspace=vue run",
-    "build": "npm run vue build"
-  },
-  "workspaces": [
-    "apps/server",
-    "apps/vue"
-  ],
-  "devDependencies": {
-    "@types/node": "^20.11.25",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.2"
-  }
+	"name": "shinyguesser",
+	"version": "1.0.0",
+	"description": "",
+	"author": "kripi-png",
+	"license": "ISC",
+	"scripts": {
+		"server": "npm --workspace=server run",
+		"vue": "npm --workspace=vue run",
+		"build": "npm run vue build"
+	},
+	"workspaces": [
+		"apps/server",
+		"apps/vue"
+	],
+	"devDependencies": {
+		"@types/node": "^20.11.25",
+		"prettier": "^3.2.5",
+		"typescript": "^5.4.2"
+	},
+	"engines": {
+		"node": ">=18.18.2"
+	}
 }
