@@ -6,26 +6,7 @@
 	"builds": [
 		{
 			"src": "package.json",
-			"use": "@vercel/static-build",
-			"config": { "distDir": "build" }
-		},
-    {
-      "src": "index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "views/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/((?!.*\\.\\w+$).*)",
-      "dest": "/index.js"
-    },
-    {
-      "src": "/(.+\\.[a-z]+)$",
-      "dest": "/views/$1"
-    }
+			"use": "@vercel/static-build"
+		}
   ]
 }
