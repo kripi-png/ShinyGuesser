@@ -4,9 +4,10 @@
 	"buildCommand": "npm run build",
 	"outputDirectory": "build",
 	"builds": [
-		{
-			"src": "./build/index.js",
-			"use": "@vercel/node"
-		}
-	]
+      { "src": "build/app.js", "use": "@vercel/node" }
+   ],
+   "routes": [
+      { "src": "/(.*)", "dest": "build/index.js" }
+   ]
+
 }
