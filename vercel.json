@@ -5,7 +5,7 @@
 	"outputDirectory": "build",
 	"functions": {
 		"/build/index.js": {
-			includeFiles: "build/**"
+			"includeFiles": "build/**"
 		}
 	}
 }
