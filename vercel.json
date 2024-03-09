@@ -1,5 +1,5 @@
 {
-	"buildCommand": "npm run server build -- -- --outDir ../../build",
+	"buildCommand": "npm run server build -- -- --outDir ../../build && npm run vue build -- -- --outDir ../../build/views",
 	"version": 2,
 	"outputDirectory": "build",
 	"builds": [
