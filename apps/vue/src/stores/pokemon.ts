@@ -1,10 +1,23 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
+interface CurrentPokemon {
+	id: string;
+	varietyName: string;
+	displayName: string;
+	sprite: {
+		isShiny: boolean;
+		url: string;
+	};
+}
 export const usePokemonStore = defineStore('pokemons', () => {
 	const streak = ref(0);
-	const currentPokemon = ref(null);
+	const currentPokemon = ref<CurrentPokemon | null>(null);
 	const isLoading = ref(true);
+
+	const imageUrl = computed(() => {
+		return currentPokemon.value?.sprite?.url;
+	});
 
 	function increaseStreak() {
 		streak.value++;
@@ -24,6 +37,7 @@ export const usePokemonStore = defineStore('pokemons', () => {
 	return {
 		streak,
 		currentPokemon,
+		imageUrl,
 		isLoading,
 		getNewPokemon,
 		increaseStreak,

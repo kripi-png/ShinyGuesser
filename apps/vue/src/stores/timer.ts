@@ -4,7 +4,7 @@ import { formatSeconds } from '../utils';
 
 export const useTimerStore = defineStore('timer', () => {
 	const secondsElapsed = ref(0);
-	let intervalId: number | null = null;
+	let intervalId: null | ReturnType<typeof setTimeout> = null;
 
 	const formattedTime = computed(() => {
 		return formatSeconds(secondsElapsed.value);

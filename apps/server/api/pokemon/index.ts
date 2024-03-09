@@ -25,7 +25,10 @@ const getRandomSprite = (sprites: PokemonSprites): RandomSpriteObj => {
 	const isFemale = femaleDiffers ? Math.random() >= 0.5 : false;
 	const genderSprites = (
 		isFemale ? helperSprites.female : helperSprites.default
-	) as { normal: string; shiny: string };
+	) as {
+		normal: string;
+		shiny: string;
+	};
 	const url = isShiny ? genderSprites.shiny : genderSprites.normal;
 
 	return {
