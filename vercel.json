@@ -4,9 +4,13 @@
 	"buildCommand": "npm run build",
 	"outputDirectory": "build",
 	"routes": [
-		{
-			"src": "/(.*)",
-			"dest": "build/index.js"
-		}
-	]
+	 {
+		 "src": "/((?!.*\\.\\w+$).*)",
+		 "dest": "/build//server.js"
+	 },
+	 {
+		 "src": "/(.+\\.[a-z]+)$",
+		 "dest": "/build/views/$1"
+	 }
+ ]
 }
