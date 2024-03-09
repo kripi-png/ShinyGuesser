@@ -12,9 +12,7 @@
 
 		"baseUrl": "./server",
 		"paths": {
-			"*": ["node_modules/*", "server/types/*"],
-		},
-	},
-	"include": ["./server/**/*"],
-	"exclude": ["vue"],
+			"*": ["node_modules/*", "server/types/*"]
+		}
+	}
 }

@@ -5,10 +5,9 @@ import Leaderboard from '@/components/Leaderboard.vue';
 import Timer from '@/components/Timer.vue';
 import { usePokemonStore } from '@/stores/pokemon';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 
 const store = usePokemonStore();
-const { currentPokemon, isLoading } = storeToRefs(store);
+const { imageUrl } = storeToRefs(store);
 store.isLoading = true;
 store.getNewPokemon();
 </script>
@@ -21,7 +20,7 @@ store.getNewPokemon();
 			width="300"
 			height="300"
 			max-width="500"
-			:src="currentPokemon && currentPokemon.sprite.url"
+			:src="imageUrl"
 		>
 			<template v-slot:placeholder>
 				<v-progress-circular

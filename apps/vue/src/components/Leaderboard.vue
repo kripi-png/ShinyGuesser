@@ -2,11 +2,16 @@
 import { ref, onMounted } from 'vue';
 import { formatSeconds } from '../utils';
 
-let leaderboardData = ref([]);
+type LeaderboardEntry = {
+	user: string;
+	streak: number;
+	time: number;
+};
+let leaderboardData = ref<LeaderboardEntry[]>([]);
 onMounted(async () => {
 	// get top 10
 	const res = await fetch('/api/leaderboard');
-	const { data, meta } = await res.json();
+	const { data } = await res.json();
 	leaderboardData.value = data;
 });
 </script>

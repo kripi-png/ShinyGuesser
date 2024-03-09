@@ -1,17 +1,18 @@
 {
 	"version": 2,
-	"name": "shiny-guesser",
+	"buildCommand": "npm run server build -- -- --outDir ../../build && npm run vue build -- -- --outDir ../../build/views",
+	"outputDirectory": "build",
 	"builds": [
 		{
-			"src": "dist/index.js",
+			"src": "build/index.js",
 			"use": "@vercel/node",
-			"config": { "includeFiles": ["dist/**"] }
+			"config": { "includeFiles": ["build/**"] }
 		}
 	],
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "dist/index.js"
+			"dest": "build/index.js"
 		}
 	]
 }

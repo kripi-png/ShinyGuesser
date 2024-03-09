@@ -1,8 +1,5 @@
 ## Todo
 
-- look into and implement tRCP
-- work on styling of the website
-- try displaying also the back of the pokemon in shiny guesser
 - work on the type guessing mode
 - work on Shiny Guesser: Daily
 
