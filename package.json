@@ -6,7 +6,8 @@
   "license": "ISC",
   "scripts": {
     "server": "npm --workspace=server run",
-    "vue": "npm --workspace=vue run"
+    "vue": "npm --workspace=vue run",
+    "build": "npm run vue build"
   },
   "workspaces": [
     "apps/server",
