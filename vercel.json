@@ -12,7 +12,7 @@
 		{
 			"src": "build/index.js",
 			"use": "@vercel/node",
-			"config": { "includeFiles": ["build/**"] }
+			"config": { "includeFiles": ["build/**"]}
 		}
 	],
 	"routes": [
