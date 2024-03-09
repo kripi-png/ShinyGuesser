@@ -4,6 +4,10 @@
   "description": "",
   "author": "kripi-png",
   "license": "ISC",
+  "scripts": {
+    "server": "npm --workspace=server run",
+    "vue": "npm --workspace=vue run"
+  },
   "workspaces": [
     "apps/server",
     "apps/vue"
